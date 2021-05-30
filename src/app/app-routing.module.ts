@@ -36,6 +36,11 @@ const routes: Routes = [
     path: 'historico-solicitacoes',
     loadChildren: () => import('./page/historico-solicitacoes/historico-solicitacoes.module').then( m => m.HistoricoSolicitacoesPageModule)
   },
+  {
+    path: 'minhas-evolucoes',
+    loadChildren: () => import('./page/minhas-evolucoes/minhas-evolucoes.module').then( m => m.MinhasEvolucoesPageModule)
+  },
+ 
  
  
 ];

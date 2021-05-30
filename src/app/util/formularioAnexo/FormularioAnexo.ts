@@ -1,6 +1,7 @@
+import { Imagem } from 'src/app/component/imagem/Imagem';
 import { Parametro } from './Parametro';
-import { SolicitacaoAtendimento } from '../SolicitacaoAtendimento';
-import { Imagem } from '../../model/Imagem';
+import { SolicitacaoAtendimento } from './SolicitacaoAtendimento';
+
 
 export class FormularioAnexo { 
     listaImagens: Imagem[] = new Array<Imagem>();

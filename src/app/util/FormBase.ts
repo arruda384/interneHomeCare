@@ -5,8 +5,7 @@ import { CadService } from '../cad/cad-service.service';
 import { ConnectionServiceProvider } from './conexao/connection-service';
 import { FormularioAnexoService } from './formularioAnexo/FormularioAnexoService';
 import { Parametro } from './formularioAnexo/Parametro';
-import { TranslateService } from '@ngx-translate/core';
-import { Toast } from '@capacitor/toast';
+
 
 
 
@@ -23,7 +22,12 @@ export class FormBase {
 
 
     constructor(public formService: FormularioAnexoService,
-        public connectivityServer: ConnectionServiceProvider, public loadingCtrl: LoadingController, public cadService: CadService, public alertCtrl: AlertController, public translateService: TranslateService) { }
+        public connectivityServer: ConnectionServiceProvider,
+         public loadingCtrl: LoadingController,
+          public cadService: CadService, 
+          public alertCtrl: AlertController
+        //   public translateService: TranslateService
+          ) { }
 
     abrirModulo(value: string, abertoFechado: boolean) {
         this.abertoFechado = abertoFechado;
@@ -160,14 +164,14 @@ export class FormBase {
     //     alert.present();
     // }
 
-    traduzirCampo(texto: string) {
-        this.translateService.get(texto).subscribe(
-            value => {
-                texto = value;
-            }
-        )
-        return texto;
-    }
+    // traduzirCampo(texto: string) {
+    //     this.translateService.get(texto).subscribe(
+    //         value => {
+    //             texto = value;
+    //         }
+    //     )
+    //     return texto;
+    // }
 
     simOuNao(valor) {
         return valor == 1 ? "Sim" : "Não";
@@ -508,13 +512,13 @@ export class FormBase {
     //     });
     // }
 
-    setMensagem(texto) {
-        const showHelloToast = async (texto) => {
-            await Toast.show({
-                text: texto,
-            });
-        };
-    }
+    // setMensagem(texto) {
+    //     const showHelloToast = async (texto) => {
+    //         await Toast.show({
+    //             text: texto,
+    //         });
+    //     };
+    // }
 }
 
 
