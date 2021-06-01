@@ -2,12 +2,16 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
+import { environment } from "src/environments/environment";
 import { Configuracao } from "../util/Configuracao";
 import { STORAGE_KEYS } from "../util/localStorage/storage_keys.config";
 import { UtilProvider } from "../util/util";
 @Injectable()
 export class CadService {
-  urlApi = null;
+  urlApi = environment.apiUrl;
+  mvPepApi = environment.mvApiPepHomeCare;
+  mvAnexoApi = environment.mvApiPepHomeCare;
+
   confSinaisVitais: Configuracao = new Configuracao();
 
 
@@ -15,7 +19,7 @@ constructor(public http: HttpClient, private localStore: Storage, public util: U
   this.getUrlApi();
 }
 
-getUrlApi() {
+public getUrlApi() {
   // this.urlApi = "http://192.168.0.101:8080/";
   this.urlApi = window.localStorage.getItem("url_servico");
   console.log("URL CONT NULL: " + this.urlApi);
@@ -53,13 +57,9 @@ getConfig(): Configuracao {
 }
 
 public getConfiguracoes() {
+  let url = this.urlApi +  this.mvPepApi +'/conf';
+  
   // let url = 'http://168.138.224.173:8042/mv-api-pep-home-care/conf';
-  // let url = 'http://192.168.0.103:8080/mv-api-pep-home-care/conf';
-  // let url = 'http://10.0.4.210:8080/mv-api-pep-home-care/conf';
-  // let url = 'http://10.0.2.251:8080/mv-api-pep-home-care/conf';
-  //    let url = 'http://10.0.2.13:8080/mv-api-pep-home-care/conf';
-  let url = 'http://localhost:8080/mv-api-pep-home-care/conf';
-
 
   return this.http
       .get<Configuracao>(url)

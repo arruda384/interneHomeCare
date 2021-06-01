@@ -17,15 +17,18 @@ export class FormBase {
     public abertoFechado: boolean = false;
     public listFeriadPresta: any[];
     public isFeriado = false;
+    public loadingCtrl: LoadingController;
+    public alertCtrl: AlertController;
+    public formService: FormularioAnexoService;
     // loading: Loading;
 
 
 
-    constructor(public formService: FormularioAnexoService,
-        public connectivityServer: ConnectionServiceProvider,
-         public loadingCtrl: LoadingController,
-          public cadService: CadService, 
-          public alertCtrl: AlertController
+    constructor(
+        // public formService: FormularioAnexoService,
+        // public connectivityServer: ConnectionServiceProvider,
+        //  public loadingCtrl: LoadingController,
+        //   public alertCtrl: AlertController
         //   public translateService: TranslateService
           ) { }
 

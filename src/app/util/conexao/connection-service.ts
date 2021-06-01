@@ -19,7 +19,7 @@ export class ConnectionServiceProvider {
     // })
   }
 
-  isOnline(): boolean {
+  public isOnline(): boolean {
     // if (this.onDevice && this.network.type) {
     //   return this.network.type !== 'none';
     // } else {

@@ -16,7 +16,29 @@
 
   <div id="container">
 
-    <a routerLink="minhas-evolucoes" routerLinkActive="selected">Eolucoes</a><br>
+
+    <ion-buttons>
+      <ion-searchbar item-start style="width: 87%" (ionChange)="getEnd()" placeholder="Pesquisar Evolução"
+        [(ngModel)]="cep"></ion-searchbar>
+      <!-- <button item-end ion-button icon-only style="margin-top: -9%;" (click)='getAll()'> -->
+      <button item-end ion-button icon-only style="margin-top: -22%;">
+        <ion-icon name="ios-close-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <div>
+      {{endereco | json}}
+    </div>
+
+    
+
+    <a routerLink="minhas-evolucoes" routerLinkActive="selected">Evolucoes</a><br> 
+    <a routerLink="teste" routerLinkActive="selected">teste</a><br> 
+
+    <!-- <ion-button (click)="historicoEvolucoes()" expand="block">
+      <ion-icon name="camera" slot="start"></ion-icon>
+      Evolucoes click
+    </ion-button> -->
 
   <ion-button (click)="takePicture()" expand="block">
     <ion-icon name="camera" slot="start"></ion-icon>

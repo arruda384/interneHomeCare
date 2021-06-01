@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UtilProvider } from '../util';
 import { CadService } from 'src/app/cad/cad-service.service';
 import { FormularioAnexo } from './FormularioAnexo';

@@ -1,0 +1,225 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Minhas Evoluções</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="pesquisa-pacientes">
+    <div *ngIf="tituloPage=='Doc de Prontuário'">
+    <ion-row class="data1">
+      <ion-item class="itemSelect">
+          <ion-label> Agrupar Por:</ion-label>
+          <ion-select class="selects" name="agrupar" [(ngModel)]="agruparPorPaciente" (ionChange)="getEvolucoesData()" 
+              >
+              <ion-select-option value="1">Paciente</ion-select-option>
+              <ion-select-option value="2">Prontuário</ion-select-option>
+          </ion-select>
+      </ion-item>
+  </ion-row>
+  </div>
+  
+  <div class="filtrar-data">
+    <ion-row class="data4">
+      <ion-col col-6>
+        <ion-label class="text-data">Início</ion-label>
+        <ion-item class="itemSelect">
+          <ion-datetime style="border-radius: 6px;" class="inputs" placeholder="DD/MM/YYYY"
+            (ionChange)="getEvolucoesData()" [(ngModel)]="dataInicio" value="dataAtual" displayFormat="DD/MM/YYYY"
+            max="2021"  min="2020">
+          </ion-datetime>
+        </ion-item>
+      </ion-col>
+  
+      <ion-col col-6>
+        <ion-label class="text-data">Fim</ion-label>
+        <ion-item class="itemSelect">
+          <ion-datetime (ionChange)="getEvolucoesData()" style="border-radius: 6px;" class="inputs"
+            placeholder="DD/MM/YYYY" disaled="!dataInicio" [(ngModel)]="dataFim" value="dataAtual" max="2021" 
+            displayFormat="DD/MM/YYYY" min="2020">
+          </ion-datetime>
+        </ion-item>
+      </ion-col>
+  
+    </ion-row>
+  </div>
+  
+    <ion-row class="total-pront">
+      <ion-label  *ngIf="qtdEvolucoes>0" class="labelsFixas total-prontuarios">Total de Prontuários:   
+      <div *ngIf="qtdEvolucoes>0" class="tituloLadoAlado quantidade-prontuario" > {{qtdEvolucoes}}   </div> 
+    </ion-label> 
+    </ion-row>
+  
+    <ion-row class="data2">
+      <ion-label class="labelsFixas periodo-disable">Período:</ion-label> 
+      <div class="tituloLadoAlado periodo">
+         <!-- Período: - {{dataInicio | date: 'dd/MM/yyyy'}}  até {{dataFim | date: 'dd/MM/yyyy'}} -->
+         Período: -  {{dataInicio | date: 'dd/MM/yyyy'}}  até {{dataFim | date: 'dd/MM/yyyy'}}
+        </div> 
+    </ion-row>
+  
+    
+  
+  
+  </div>
+  
+    
+    <div *ngIf="agruparPorPaciente=='1'"> 
+      <!-- lista de paciente -->
+      <ion-grid class="listaPacientes" *ngFor="let item of menuEvolucoes">
+  
+        <ion-item (click)="getPacienteSelecionado(item)">
+          <ion-label [ngClass]="(item.codigo==menuPacienteSelecionado.codigo)? 'selecionado': ''">
+            <ion-icon class="iconMenuEvolucoes " name="person"></ion-icon>
+            {{item.nome}}
+            <ion-badge class="qtdDocumento">{{item.qtd}}</ion-badge>
+          </ion-label>
+        </ion-item>
+        <!-- lista das evoluções do paciente -->
+        <!-- <ion-list class="listaEvolucoes" *ngIf="codigoPacienteSelecionado==item.codigo"> -->
+  
+        <!-- <ion-item-group> -->
+  
+  
+        <div *ngIf="menuPacienteSelecionado.codigo==item.codigo">
+  
+          <ion-list class="listaEvolucoes" *ngFor="let item of evolucoesPaciente; let i=index">
+            <ion-list-header class="tituloLista">
+              <ion-label [ngClass]="(nomeEvolucaoSelecionada==item.nome)? 'selecionado': ''"
+                (click)="getEvolucaoSelecionadaPaciente(item.nome)">
+                <ion-icon class="iconMenuEvolucoes" name="document"></ion-icon>
+                {{item.nome}}
+                <ion-badge class="qtdEvolucao">{{item.qtd}}</ion-badge>
+              </ion-label>
+            </ion-list-header>
+  
+            <ion-item-sliding class="itemEvolucao" *ngIf="nomeEvolucaoSelecionada==item.nome">
+              <ion-item class="itemEvolucao" *ngFor="let item of listaEvolucaoSelecionada">
+                <!-- <ion-grid class="itemEvolucao"> -->
+                <p>
+                  <ion-icon *ngIf="item.status=='FECHADO'" class="iconMenuEvolucoes iconEvolucaoFechada" name="checkmark-circle">
+                  </ion-icon>
+                  <ion-icon *ngIf="item.status=='CANCELADO'" class="iconMenuEvolucoes iconCancel" name="remove-circle">
+                  </ion-icon>
+                  {{item.nomeEvolucao}}
+                  <!-- <ion-icon *ngIf=""  ios="ios-phone-landscape" md="md-phone-landscape"></ion-icon>
+                  <ion-icon *ngIf=""  ios="ios-desktop" md="md-desktop"></ion-icon> -->
+  
+                </p>
+  
+                <p> Data | Hora: {{item.dataHora}}</p>
+                <p>Cód Paciente: {{item.codigoPaciente}}</p>
+                <p>Cód Atendimento: {{item.codigoAtendimento}}</p>
+                <p>Cód Evolução: {{item.codigoDocumento}}</p>
+                <p>Nome Usuário: {{item.nomeUsuario}}</p>
+                <p>Cód Usuário: {{item.codigoUsuario}}</p>
+                <p *ngIf="item.codDocAux">Cód DocAux: {{item.codDocAux}}</p>
+  
+  
+                <p class="btnRow">
+                  <button *ngIf="item.codigoUsuario == codigoUsuario || codigoUsuario =='DBAMV'" (click)="criarCancelamento(item)" class="btIcon btnCancel">
+                    <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>
+                  </button>
+                  <button *ngIf="item.codigoPdf != null" (click)="openPdf(item)" class="btIcon btnPdf">
+                    <ion-icon ios="ios-eye" md="md-eye"></ion-icon>
+                  </button>
+                  <button *ngIf="false" class="btIcon btnAdd">
+                    <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
+                  </button>
+                 
+                </p>
+                <p class="btnRow" *ngIf="base64 !=''" href="data:application/pdf;base64,[base64]" download="file.pdf"> PDF</p>
+  
+                <ion-card>
+                  <img  *ngIf="codigoPdfSelecionado==item.codigoPdf && tipoExtensaoSelecionada !='PDF'"  [src]="imagemBase64"  #myImage (click)="presentImage(myImage)"/>
+                </ion-card>
+                <!-- </ion-grid> -->
+                <br>
+              </ion-item>
+            
+  
+            </ion-item-sliding>
+          </ion-list>
+        </div>
+      </ion-grid>
+    </div>
+  
+    <div *ngIf="agruparPorPaciente=='2'"> 
+      <!-- lista de evolucoes  -->
+      <ion-grid class="listaPacientes" *ngFor="let item of menuEvolucoes">
+  
+        <ion-item (click)="getEvolucaoSelecionada(item.nome)">
+          <ion-label [ngClass]="(nomeEvolucaoSelecionada==item.nome)? 'selecionado': ''">
+          <ion-icon class="iconMenuEvolucoes " name="document"></ion-icon>
+            {{item.nome}} 
+            <ion-badge class="qtdDocumento">{{item.qtd}}</ion-badge>
+          </ion-label>
+        </ion-item>
+  
+        <div *ngIf="item.nome==nomeEvolucaoSelecionada">
+  
+          <ion-list class="listaEvolucoes" *ngFor="let item of listaEvolucaoSelecionada; let i=index">
+            <ion-list-header class="tituloLista">
+              <ion-label [ngClass]="(nomeEvolucaoSelecionada==item.nomeEvolucao)? 'selecionado': ''">
+                <ion-icon class="iconMenuEvolucoes" name="document"></ion-icon>
+                {{item.nomeEvolucao}}
+                
+                <ion-grid class="itemEvolucao" *ngIf="nomeEvolucaoSelecionada==item.nomeEvolucao">
+                  <p>
+                    <ion-icon *ngIf="item.status=='FECHADO'" class="iconMenuEvolucoes iconEvolucaoFechada" name="checkmark-circle">
+                    </ion-icon>
+                    <ion-icon *ngIf="item.status=='CANCELADO'" class="iconMenuEvolucoes iconCancel" name="remove-circle">
+                    </ion-icon>
+                    {{item.nomePaciente}}
+                    <ion-icon *ngIf=""  ios="ios-phone-landscape" md="md-phone-landscape"></ion-icon>
+                    <ion-icon *ngIf=""  ios="ios-desktop" md="md-desktop"></ion-icon>
+    
+                  </p>
+    
+                  <p> Data | Hora: {{item.dataHora}}</p>
+                  <p>Cód Paciente: {{item.codigoPaciente}}</p>
+                  <p>Cód Atendimento: {{item.codigoAtendimento}}</p>
+                  <p>Cód Evolução: {{item.codigoDocumento}}</p>
+                  <p>Nome Usuário: {{item.nomeUsuario}}</p>
+                  <p>Cód Usuário: {{item.codigoUsuario}}</p>
+                  <p *ngIf="item.codDocAux">Cód DocAux: {{item.codDocAux}}</p>
+  
+    
+    
+                  <p class="btnRow">
+                    <button *ngIf="item.codigoUsuario == codigoUsuario" (click)="criarCancelamento(item)" class="btIcon btnCancel">
+                      <ion-icon ios="ios-close-circle" md="md-close-circle"></ion-icon>
+                    </button>
+                    <button *ngIf="item.codigoPdf != null" (click)="openPdf(item)" class="btIcon btnPdf">
+                      <ion-icon ios="ios-eye" md="md-eye"></ion-icon>
+                    </button>
+                    <button *ngIf="false" class="btIcon btnAdd">
+                      <ion-icon ios="ios-add-circle" md="md-add-circle"></ion-icon>
+                    </button>
+                  </p>
+                  
+                  <p class="btnRow" *ngIf="base64 !=''" href="data:application/pdf;base64,[base64]" download="file.pdf"> PDF</p>
+  
+  
+                  <ion-card>
+                    <img  *ngIf="codigoPdfSelecionado==item.codigoPdf && tipoExtensaoSelecionada !='PDF'"  [src]="imagemBase64"  #myImage (click)="presentImage(myImage)"/>
+                  </ion-card>
+                  </ion-grid>
+              </ion-label>
+            </ion-list-header>
+          </ion-list>
+        </div>
+      </ion-grid>
+    </div>
+  
+    <div class="pesquisarPacientes" *ngIf="menuEvolucoes.length == 0">
+      <ion-item>
+        <b class="filtro-selecionado">Sem Protuário para o filtro selecionado!</b>
+      </ion-item>
+    </div>
+
+</ion-content>
